@@ -1,0 +1,45 @@
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: job
+spec:
+  # every 15 minutes
+  schedule: "*/15 * * * *"
+  concurrencyPolicy: Forbid
+  successfulJobsHistoryLimit: 3
+  failedJobsHistoryLimit: 1
+  jobTemplate:
+    spec:
+      ttlSecondsAfterFinished: 60
+      template:
+        spec:
+          restartPolicy: Never
+          containers:
+            - name: job
+              image: "mattcl/calibre-auto-import:0.1.0"
+              imagePullPolicy: IfNotPresent
+              args:
+                - "--dry-run"
+              envFrom:
+                - configMapRef:
+                    name: "job-config"
+              volumeMounts:
+                - name: data
+                  mountPath: /config
+                - name: stump-watch
+                  mountPath: /books
+                - name: calibre-import
+                  mountPath: /cwa-book-ingest
+          volumes:
+            - name: data
+              persistentVolumeClaim:
+                claimName: data-pvc
+            - name: calibre-import
+              hostPath:
+                path: /media/calibre-import
+                type: Directory
+            - name: stump-watch
+              hostPath:
+                path: /mnt/books/general
+                type: Directory
