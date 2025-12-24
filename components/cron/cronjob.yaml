@@ -19,8 +19,8 @@ spec:
             - name: job
               image: "mattcl/calibre-auto-import:0.1.0"
               imagePullPolicy: IfNotPresent
-              args:
-                - "--dry-run"
+              # args:
+              #   - "--dry-run"
               envFrom:
                 - configMapRef:
                     name: "job-config"
