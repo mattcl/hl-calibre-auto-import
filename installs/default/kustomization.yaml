@@ -8,7 +8,7 @@ namespace: "calibre-auto-import"
 namePrefix: "calibre-auto-import-"
 images:
   - name: "mattcl/calibre-auto-import"
-    newTag: "0.1.0"
+    newTag: "0.2.0"
 
 configMapGenerator:
   - name: job-config
