@@ -1,0 +1,20 @@
+---
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - ../../components/app
+  
+  
+  
+namespace: "calibre-auto-import"
+namePrefix: "calibre-auto-import-"
+images:
+  - name: "mattcl/calibre-auto-import"
+    newTag: "latest"
+  
+  
+configMapGenerator:
+  - name: app-config
+    envs:
+      - "app-config.env"
+  
